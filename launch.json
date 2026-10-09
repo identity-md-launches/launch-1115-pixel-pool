@@ -9,8 +9,7 @@
     "contract": "PixelPoolToken",
     "name": "Pixel Pool",
     "symbol": "PIXEL",
-    "decimals": 18,
-    "totalSupply": "1000000000000000000000000000"
+    "decimals": 18
   },
   "pool": {
     "pairedCurrency": "0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7",
@@ -18,5 +17,5 @@
     "tickSpacing": 60,
     "initialPrice": "50108289675009586237282760313921"
   },
-  "notes": "Immutable fee-free canvas hook. Only the launchpad standard 12500 pool fee applies. Run script/PlanDeployment.s.sol with the actual CREATE2 factory and $poolManager; use its mined token salt so PIXEL > IMD and its hook salt for flags 0x2040. Deploy token and hook and initialize atomically: currency0 IMD, currency1 PIXEL, 400000 PIXEL per IMD. No owner, settings or post-launch calls."
+  "notes": "PixelPoolHook implements IHooks directly and validates its beforeInitialize and afterSwap permissions in its sole PoolManager constructor. Every callback authenticates the PoolManager. The first initialization binds the hook to that PoolId; subsequent initialization and swaps for another pool revert. Each swap paints the next dot of a packed 32x32 on-chain canvas, wrapping after 1024 swaps. Buys are green and sells red, with four shades selected by the absolute executed quote-side delta at 5, 50 and 500 IMD (18 decimals). Painted attributes the stroke to tx.origin for display only. Views expose the canvas, palette, pass, SVG and Base64 SVG URI. The hook returns zero swap delta, takes no fee and never moves funds. The pool LP fee is 12500 (1.25%); the hook accepts this fee. No owner, admin, upgrades, settings or required post-deployment calls. For this launch currency0 is IMD and currency1 is PIXEL: the initialPrice is decimal sqrtPriceX96 for 400000 PIXEL per IMD. script/PlanDeployment.s.sol mines salts using the actual CREATE2 factory and resolved PoolManager so PIXEL > IMD and the hook permission bits equal 0x2040. The existing planned-deployment test asserts that address order and initializes at the listed price, fee and spacing. Deployment must use the mined salts and atomically deploy the token, deploy the hook and initialize the pool; the hook binds the first pool without a factory-sender restriction. These notes describe integration requirements, not deployment policy."
 }
