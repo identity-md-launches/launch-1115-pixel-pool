@@ -1,0 +1,22 @@
+{
+  "kind": "univ4_hook",
+  "hook": {
+    "contract": "PixelPoolHook",
+    "constructorArgs": ["$poolManager"],
+    "permissions": ["beforeInitialize", "afterSwap"]
+  },
+  "token": {
+    "contract": "PixelPoolToken",
+    "name": "Pixel Pool",
+    "symbol": "PIXEL",
+    "decimals": 18,
+    "totalSupply": "1000000000000000000000000000"
+  },
+  "pool": {
+    "pairedCurrency": "0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7",
+    "fee": 12500,
+    "tickSpacing": 60,
+    "initialPrice": "50108289675009586237282760313921"
+  },
+  "notes": "Immutable fee-free canvas hook. Only the launchpad standard 12500 pool fee applies. Run script/PlanDeployment.s.sol with the actual CREATE2 factory and $poolManager; use its mined token salt so PIXEL > IMD and its hook salt for flags 0x2040. Deploy token and hook and initialize atomically: currency0 IMD, currency1 PIXEL, 400000 PIXEL per IMD. No owner, settings or post-launch calls."
+}
